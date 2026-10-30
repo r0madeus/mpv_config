@@ -1,0 +1,4 @@
+# Kişisel durum: kaldığın yerler ve izleme geçmişi
+watch_later/
+watch_history.jsonl
+*.log
