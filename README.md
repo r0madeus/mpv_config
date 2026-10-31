@@ -25,3 +25,11 @@ Klasör zaten varsa önce yedeğini al ya da sil.
 - `scripts/thumbfast.lua`, `script-opts/thumbfast.conf`: ilerleme çubuğu önizlemesi
 
 uosc, menüdeki Araçlar > uosc güncelle ile güncellenir. Güncellemeden sonra `git diff` ile `uosc.conf`'un korunduğunu kontrol et.
+
+## uosc yerel yaması
+
+`patches/uosc-yerel-yama.patch`, uosc'ta iki küçük düzeltme yapar: önizleme çerçevesini inceltir ve zaman ipucunu kapsül yapar (köşe yarıçapı yüksekliğin yarısını geçmez). uosc güncellemesi bu yamayı siler. Güncellemeden sonra şunu çalıştır:
+
+```powershell
+cd "$env:APPDATA\mpv"; git apply patches/uosc-yerel-yama.patch
+```

@@ -1,0 +1,38 @@
+diff --git a/scripts/uosc/elements/Timeline.lua b/scripts/uosc/elements/Timeline.lua
+index 859eab7..d327821 100644
+--- a/scripts/uosc/elements/Timeline.lua
++++ b/scripts/uosc/elements/Timeline.lua
+@@ -482,7 +482,9 @@ function Timeline:render()
+ 			and thumbnail.width ~= 0
+ 			and thumbnail.height ~= 0
+ 		then
+-			local border = math.ceil(math.max(2, state.radius / 2) * state.scale)
++			-- yerel yama: ince çerçeve, köşe yarıçapı çerçeveyle sınırlı
++			local border = math.ceil(2 * state.scale)
++			local thumb_radius = math.min(state.radius, border * 3)
+ 			local thumb_x_margin, thumb_y_margin = border + tooltip_gap + bax, border + tooltip_gap
+ 			local thumb_width, thumb_height = thumbnail.width, thumbnail.height
+ 			local thumb_x = round(clamp(
+@@ -498,7 +500,7 @@ function Timeline:render()
+ 				border = 1,
+ 				opacity = {main = config.opacity.thumbnail, border = 0.08 * config.opacity.thumbnail},
+ 				border_color = fg,
+-				radius = state.radius,
++				radius = thumb_radius,
+ 			})
+ 			local thumb_seconds = (state.rebase_start_time == false and state.start_time) and
+ 				(hovered_seconds - state.start_time) or hovered_seconds
+diff --git a/scripts/uosc/lib/ass.lua b/scripts/uosc/lib/ass.lua
+index 2cd78cd..494ce9e 100644
+--- a/scripts/uosc/lib/ass.lua
++++ b/scripts/uosc/lib/ass.lua
+@@ -131,7 +131,8 @@ function ass_mt:tooltip(element, value, opts)
+ 	-- Draw
+ 	local ax, ay, bx, by = round(x - width_half), round(y - height_half), round(x + width_half), round(y + height_half)
+ 	self:rect(ax, ay, bx, by, {
+-		color = opts.invert_colors and fg or bg, opacity = config.opacity.tooltip, radius = state.radius
++		-- yerel yama: yarıçap yüksekliğin yarısını geçmesin, ipucu kapsül olsun
++		color = opts.invert_colors and fg or bg, opacity = config.opacity.tooltip, radius = math.min(state.radius, (by - ay) / 2)
+ 	})
+ 	local func = opts.timestamp and self.timestamp or self.txt
+ 	func(self, x, y, 5, tostring(value), opts)

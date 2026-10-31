@@ -131,7 +131,8 @@ function ass_mt:tooltip(element, value, opts)
 	-- Draw
 	local ax, ay, bx, by = round(x - width_half), round(y - height_half), round(x + width_half), round(y + height_half)
 	self:rect(ax, ay, bx, by, {
-		color = opts.invert_colors and fg or bg, opacity = config.opacity.tooltip, radius = state.radius
+		-- yerel yama: yarıçap yüksekliğin yarısını geçmesin, ipucu kapsül olsun
+		color = opts.invert_colors and fg or bg, opacity = config.opacity.tooltip, radius = math.min(state.radius, (by - ay) / 2)
 	})
 	local func = opts.timestamp and self.timestamp or self.txt
 	func(self, x, y, 5, tostring(value), opts)
